@@ -1,7 +1,7 @@
 (() => {
-  // js/modules/config.js
+  // src/modules/config.js
   var config;
-  var config_default = config = window.pagedMakerConfig || {
+  var config_default = (config = window.pagedMakerConfig || {
     content: "body",
     stylesheet: void 0,
     hooks: void 0,
@@ -13,12 +13,12 @@
       "fontSize",
       "lineHeight",
       "backgroundColor",
-      "textColor"
+      "textColor",
     ],
-    uicolor: void 0
-  };
+    uicolor: void 0,
+  });
 
-  // js/modules/utils.js
+  // src/modules/utils.js
   async function delay(time) {
     return new Promise((resolve, reject) => {
       if (isNaN(time)) {
@@ -30,11 +30,13 @@
   }
   function print2(e) {
     e.preventDefault();
-    var t = document.querySelector(".pagedPreviewer-previewFrame").contentWindow;
+    var t = document.querySelector(
+      ".pagedPreviewer-previewFrame",
+    ).contentWindow;
     t.focus(), t.print();
   }
 
-  // js/modules/getValues.js
+  // src/modules/getValues.js
   function getValue(input) {
     const suffix = input.dataset.sizing || "";
     return `${input.dataset.cssProp}: ${input.value}${suffix};`;
@@ -48,11 +50,11 @@
     return marginObject;
   }
   function getPageSize() {
-    let pageSize2 = `@page { size: ${document.querySelector("select.pagedSize").value}; }`;
+    let pageSize2 = `@page { size: ${document.querySelector("select.pagedSize")?.value ? document.querySelector("select.pagedSize").value : "letter"}; }`;
     return pageSize2;
   }
 
-  // js/modules/baseStylesheet.js
+  // src/modules/baseStylesheet.js
   var baseStylesheet_default = `
 
 @import url('https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,500;1,400;1,500&display=swap');
@@ -105,7 +107,7 @@ h1,h2 {
 
 `;
 
-  // js/modules/pagedmakerCSS.js
+  // src/modules/pagedmakerCSS.js
   var pagedmakerCSS_default = `
 
 
@@ -225,7 +227,7 @@ h1,h2 {
     }
 `;
 
-  // js/modules/uicss.js
+  // src/modules/uicss.js
   var uicss_default = `
 @import url('https://fonts.googleapis.com/css2?family=Jost:wght@100&display=swap');
 
@@ -304,7 +306,7 @@ h1,h2 {
 }
 `;
 
-  // js/modules/features/class.js
+  // src/modules/features/class.js
   var Control = class {
     constructor(name, render) {
       this.name = name;
@@ -315,7 +317,7 @@ h1,h2 {
     }
   };
 
-  // js/modules/features/pageSize.js
+  // src/modules/features/pageSize.js
   var pageSize = new Control();
   pageSize.name = "pageSize";
   pageSize.render = `<label class="pagedSize" for="page-size">page size</label>
@@ -328,7 +330,7 @@ h1,h2 {
 </select>`;
   var pageSize_default = pageSize;
 
-  // js/modules/features/pageMargins.js
+  // src/modules/features/pageMargins.js
   var pageMargins = new Control();
   pageMargins.name = "pageMargins";
   pageMargins.render = `<label for="marginTop">margin-top</label>
@@ -341,7 +343,7 @@ h1,h2 {
     <input class="pagedPreviewer-marginUpdate" id="margin-left" name="marginLeft" value="10" data-sizing="mm">`;
   var pageMargins_default = pageMargins;
 
-  // js/modules/features/fontFamily.js
+  // src/modules/features/fontFamily.js
   var fontFamily = new Control();
   fontFamily.name = "fontFamily";
   fontFamily.render = `
@@ -353,7 +355,7 @@ h1,h2 {
 </select>`;
   var fontFamily_default = fontFamily;
 
-  // js/modules/features/fontSize.js
+  // src/modules/features/fontSize.js
   var fontSize = new Control();
   fontSize.name = "fontSize";
   fontSize.render = `
@@ -362,7 +364,7 @@ h1,h2 {
 `;
   var fontSize_default = fontSize;
 
-  // js/modules/features/lineHeight.js
+  // src/modules/features/lineHeight.js
   var lineHeight = new Control();
   lineHeight.name = "lineHeight";
   lineHeight.render = `  <div class="pagedPreviewer-item">
@@ -371,20 +373,28 @@ h1,h2 {
 </div>`;
   var lineHeight_default = lineHeight;
 
-  // js/modules/features.js
-  var featureList = [fontFamily_default, pageSize_default, pageMargins_default, fontSize_default, lineHeight_default];
+  // src/modules/features.js
+  var featureList = [
+    fontFamily_default,
+    pageSize_default,
+    pageMargins_default,
+    fontSize_default,
+    lineHeight_default,
+  ];
   var features_default = featureList;
 
-  // js/modules/pagedjsLogo.js
+  // src/modules/pagedjsLogo.js
   var pagedjsLogo_default = `<svg width="81" height="99" viewBox="0 0 81 99" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.299988 92.6V98.2H37.6L68.5 73.4C75.8 67.6 80.2 61.8 80.2 52.3V8.70001V0.200012H0.299988V92.6V92.6ZM8.79999 9.10001H47.5C64.8 9.10001 72.6 19.6 72.6 34.8C72.6 61.3 56.4 67.5 30.7 63.3V89.2H8.70001V9.10001H8.79999Z" fill="black"/></svg>`;
 
-  // js/modules/ui.js
+  // src/modules/ui.js
   var features = "";
   config_default.features.forEach((feat) => {
     features_default.forEach((module) => {
       if (module.name == feat) {
+        console.log("dang", module.name);
         features += module.render;
       } else {
+        console.log(`${feat} is not existing in the list of modules`);
       }
     });
   });
@@ -418,10 +428,13 @@ ${!config_default.button ? '<button class="pagedPreviewer-button-modal">Start pa
     </div>
 </div>`;
 
-  // js/main.js
+  // src/main.js
   window.onload = document.body.insertAdjacentHTML("afterbegin", ui_default);
-  document.querySelector("body").addEventListener("click", function(e) {
-    if (e.target === document.querySelector(`${config_default.button}`) || e.target.classList.contains("pagedPreviewer-button-close")) {
+  document.querySelector("body").addEventListener("click", function (e) {
+    if (
+      e.target === document.querySelector(`${config_default.button}`) ||
+      e.target.classList.contains("pagedPreviewer-button-close")
+    ) {
       toggleModal(document.querySelector(".pagedPreviewer-modal"));
     }
   });
@@ -439,12 +452,20 @@ ${!config_default.button ? '<button class="pagedPreviewer-button-modal">Start pa
   document.querySelectorAll(".pagedPreviewer-marginUpdate").forEach((mr) => {
     mr.addEventListener("change", populatePagedMaker2);
   });
-  document.querySelector(".pagedPreviewer-button-preview").addEventListener("click", populatePagedMaker2);
-  document.querySelector(".pagedPreviewer-button-print").addEventListener("click", print2);
+  document
+    .querySelector(".pagedPreviewer-button-preview")
+    .addEventListener("click", populatePagedMaker2);
+  document
+    .querySelector(".pagedPreviewer-button-print")
+    .addEventListener("click", print2);
   function toggleModal(modal) {
     modal.classList.toggle("pagedPreviewer-hidden");
     document.body.classList.remove("pagedPreviewer-blocked");
-    if (!document.querySelector(".pagedPreviewer-modal").classList.contains("pagedPreviewer-hidden")) {
+    if (
+      !document
+        .querySelector(".pagedPreviewer-modal")
+        .classList.contains("pagedPreviewer-hidden")
+    ) {
       document.body.classList.add("pagedPreviewer-blocked");
       populatePagedMaker2();
     }
@@ -457,30 +478,45 @@ ${!config_default.button ? '<button class="pagedPreviewer-button-modal">Start pa
     await delay(100);
     let interfacecss = document.createElement("style");
     interfacecss.textContent = pagedmakerCSS_default;
-    document.querySelector(".pagedPreviewer-previewFrame").contentDocument.head.appendChild(interfacecss);
-    console.log(config_default.hooks);
-    document.querySelector(".pagedPreviewer-previewFrame").contentDocument.head.appendChild(hook);
-    let styleElement = document.querySelector(".pagedPreviewer-previewFrame").contentDocument.createElement("style");
-    styleElement.textContent = baseStylesheet_default + getMargins() + getPageSize();
+    document
+      .querySelector(".pagedPreviewer-previewFrame")
+      .contentDocument.head.appendChild(interfacecss);
+    let styleElement = document
+      .querySelector(".pagedPreviewer-previewFrame")
+      .contentDocument.createElement("style");
+    styleElement.textContent =
+      baseStylesheet_default + getMargins() + getPageSize();
     console.log(getPageSize);
-    let articleContent = document.querySelector(".pagedPreviewer-previewFrame").contentDocument.createElement("article");
+    let articleContent = document
+      .querySelector(".pagedPreviewer-previewFrame")
+      .contentDocument.createElement("article");
     if (config_default.content == void 0) {
       articleContent.innerHTML = document.body.innerHTML;
     } else {
-      articleContent.innerHTML = document.querySelector(`${config_default.content}`).innerHTML;
+      articleContent.innerHTML = document.querySelector(
+        `${config_default.content}`,
+      ).innerHTML;
     }
-    document.querySelector(".pagedPreviewer-previewFrame").contentDocument.body.appendChild(articleContent);
+    document
+      .querySelector(".pagedPreviewer-previewFrame")
+      .contentDocument.body.appendChild(articleContent);
     getAllValues(styleElement);
-    document.querySelector(".pagedPreviewer-previewFrame").contentDocument.head.appendChild(styleElement);
+    document
+      .querySelector(".pagedPreviewer-previewFrame")
+      .contentDocument.head.appendChild(styleElement);
     if (config_default.stylesheet != void 0) {
       let stylesheetConf = document.createElement("link");
       stylesheetConf.href = `${config_default.stylesheet}`;
       stylesheetConf.rel = "stylesheet";
-      document.querySelector(".pagedPreviewer-previewFrame").contentDocument.head.appendChild(stylesheetConf);
+      document
+        .querySelector(".pagedPreviewer-previewFrame")
+        .contentDocument.head.appendChild(stylesheetConf);
     }
     let pagedjsscript = document.createElement("script");
     pagedjsscript.src = "https://unpkg.com/pagedjs/dist/paged.polyfill.js";
-    document.querySelector(".pagedPreviewer-previewFrame").contentDocument.head.appendChild(pagedjsscript);
+    document
+      .querySelector(".pagedPreviewer-previewFrame")
+      .contentDocument.head.appendChild(pagedjsscript);
   }
   function getAllValues(styleElement) {
     let values = "";
@@ -494,11 +530,14 @@ ${!config_default.button ? '<button class="pagedPreviewer-button-modal">Start pa
       console.log(values);
     });
     values = `body {${values}}`;
-    return styleElement.textContent = styleElement.textContent + values;
+    return (styleElement.textContent = styleElement.textContent + values);
   }
   function createFrame() {
     const pagedMaker = document.createElement("iframe");
     pagedMaker.classList.add("pagedPreviewer-previewFrame");
-    document.querySelector(".pagedPreviewer-zonePreview").appendChild(pagedMaker);
+    document
+      .querySelector(".pagedPreviewer-zonePreview")
+      .appendChild(pagedMaker);
   }
 })();
+//# sourceMappingURL=pagedPreviewer.js.map
