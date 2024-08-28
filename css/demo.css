@@ -1,0 +1,15 @@
+body {
+    color: purple;
+    
+}
+
+p {
+    /* background: orange; */
+}
+
+@page {
+    @top-right {
+        content: "lol";
+        color: orange;
+    }
+}

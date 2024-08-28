@@ -1,0 +1,32 @@
+@media print {
+    h2 {
+      string-set: h2title content(text);
+    }
+  
+    @page  {
+  
+      
+  
+      @bottom-center  {
+        content: string(h2title);
+      }
+      @top-center {
+          content: "anthony!";
+      }
+      @bottom-right {
+          /* bug ici */
+          content: counter(page); 
+      }
+    }
+  }
+  
+  @page :left {
+      margin-right: 50mm;
+  }
+  
+  @page :right {
+      margin-left: 50mm;
+  }
+  
+  body {
+  }
